@@ -1,21 +1,58 @@
-// [Template no Kotlin Playground](https://pl.kotl.in/WcteahpyN)
-
 enum class Nivel { BASICO, INTERMEDIARIO, DIFICIL }
 
-class Usuario
+open class Usuario (val nome: String){
 
-data class ConteudoEducacional(var nome: String, val duracao: Int = 60)
+    companion object{
+        val inscritos = mutableListOf<Usuario>()
+    }
 
-data class Formacao(val nome: String, var conteudos: List<ConteudoEducacional>) {
-
-    val inscritos = mutableListOf<Usuario>()
-    
     fun matricular(usuario: Usuario) {
-        TODO("Utilize o parâmetro $usuario para simular uma matrícula (usar a lista de $inscritos).")
+        inscritos.add(usuario)
+    }
+
+    override fun toString(): String {
+        return "Usuario: $nome"
+    }
+
+}
+
+
+data class ConteudoEducacional(val nome: String, val duracao: Int = 60, val nivel: Nivel){
+
+    val duremhoras = duracao / 60
+    override fun toString(): String {
+        return "$nome: $duremhoras horas, $nivel"
     }
 }
 
+data class Formacao(val nome: String, var conteudos: List<ConteudoEducacional>)
+
+
 fun main() {
-    TODO("Analise as classes modeladas para este domínio de aplicação e pense em formas de evoluí-las.")
-    TODO("Simule alguns cenários de teste. Para isso, crie alguns objetos usando as classes em questão.")
+
+    val fundamentosko = ConteudoEducacional("Fundamentos" ,70, nivel = Nivel.BASICO)
+    val orientacaoocomk = ConteudoEducacional("Orientação a Objetos com kotlin", nivel = Nivel.INTERMEDIARIO)
+    val fundcomJav = ConteudoEducacional("Fundamentos da linguagem Java", 120, Nivel.BASICO)
+    val orientJav = ConteudoEducacional("Orientação a Objetos com Java", 150, Nivel.DIFICIL)
+
+    val kotlinform = Formacao(
+        "Kotlin",
+        conteudos = listOf(fundamentosko, orientacaoocomk)
+    )
+    val javaform = Formacao(
+        "Java", conteudos = listOf(fundcomJav,orientJav)
+    )
+
+  val usuario1 = Usuario("João")
+    usuario1.matricular(usuario1)
+
+  val usuario2 = Usuario("Carla")
+      usuario2.matricular(usuario2)
+
+    Usuario.inscritos.forEach{
+        println(it)
+    }
+    println(kotlinform)
+    println(javaform)
+    
 }
